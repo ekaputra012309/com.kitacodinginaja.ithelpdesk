@@ -4,7 +4,8 @@ import '../screens/request/request_index.dart';
 import '../constans.dart';
 import '../screens/menu.dart';
 import '../screens/other.dart';
-import 'dashboard.dart';
+import 'berita/berita_index.dart';
+import 'surat/surat_index.dart';
 
 class Bottomnavbar extends StatefulWidget {
   const Bottomnavbar({super.key});
@@ -22,26 +23,38 @@ class _BottomnavbarState extends State<Bottomnavbar> {
     });
   }
 
-  BottomNavigationBarItem _buildBottomNavigationBarItem({
+  Widget _buildBottomNavigationBarItem({
+    required int index,
     required IconData icon,
     required String label,
     required bool isSelected,
   }) {
-    return BottomNavigationBarItem(
-      icon: Icon(icon),
-      activeIcon: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.0),
-          color: CustomColors.second,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-        child: Icon(
-          icon,
-          size: 24.0, // Adjust size if needed
-          color: CustomColors.putih,
-        ),
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),  // Correctly passing the index
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: isSelected ? 16.0 : 24.0, // Adjust sizes
+            color: isSelected ? CustomColors.second : CustomColors.hitam,
+          ),
+          const SizedBox(height: 4.0),
+          Flexible(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 12.0,
+                fontWeight: FontWeight.bold,
+                color: isSelected ? CustomColors.second : CustomColors.hitam,
+              ),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2, // Allow label to wrap into two lines if necessary
+            ),
+          ),
+        ],
       ),
-      label: label,
     );
   }
 
@@ -49,7 +62,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
   Widget build(BuildContext context) {
     final userDataProvider = Provider.of<UserDataProvider>(context);
     List<Widget> pages;
-    List<BottomNavigationBarItem> items;
+    List<Widget> items;
 
     if (userDataProvider.role == 'User') {
       pages = [
@@ -58,11 +71,13 @@ class _BottomnavbarState extends State<Bottomnavbar> {
       ];
       items = [
         _buildBottomNavigationBarItem(
+          index: 0,
           icon: Icons.edit_attributes_rounded,
           label: 'Request',
           isSelected: _selectedIndex == 0,
         ),
         _buildBottomNavigationBarItem(
+          index: 1,
           icon: Icons.more_horiz_rounded,
           label: 'More',
           isSelected: _selectedIndex == 1,
@@ -70,48 +85,55 @@ class _BottomnavbarState extends State<Bottomnavbar> {
       ];
     } else {
       pages = [
-        const Dashboard(),
+        // const Dashboard(),
         const Menu(),
         const RequestIndex(),
+        const BeritaIndex(),
+        const SuratIndex(),
         const Other(),
       ];
       items = [
         _buildBottomNavigationBarItem(
-          icon: Icons.dashboard_customize_rounded,
-          label: 'Dashboard',
+          index: 0,
+          icon: Icons.home_filled,
+          label: 'Home',
           isSelected: _selectedIndex == 0,
         ),
         _buildBottomNavigationBarItem(
-          icon: Icons.list_rounded,
-          label: 'Menu',
+          index: 1,
+          icon: Icons.edit_attributes_rounded,
+          label: 'Request',
           isSelected: _selectedIndex == 1,
         ),
         _buildBottomNavigationBarItem(
-          icon: Icons.edit_attributes_rounded,
-          label: 'Request',
+          index: 2,
+          icon: Icons.newspaper_rounded,
+          label: 'News',
           isSelected: _selectedIndex == 2,
         ),
         _buildBottomNavigationBarItem(
+          index: 3,
+          icon: Icons.receipt_long_rounded,
+          label: 'Receipt',
+          isSelected: _selectedIndex == 3,
+        ),
+        _buildBottomNavigationBarItem(
+          index: 4,
           icon: Icons.more_horiz_rounded,
           label: 'More',
-          isSelected: _selectedIndex == 3,
+          isSelected: _selectedIndex == 4,
         ),
       ];
     }
 
     return Scaffold(
       body: pages[_selectedIndex],
-      bottomNavigationBar: SizedBox(
+      bottomNavigationBar: Container(
+        color: CustomColors.putih,
         height: 90.0, // Adjust height if needed
-        child: BottomNavigationBar(
-          items: items,
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          backgroundColor: CustomColors.putih,
-          selectedItemColor: CustomColors.hitam,
-          unselectedItemColor: CustomColors.hitam,
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          type: BottomNavigationBarType.fixed, // Ensure all labels are shown
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: items,
         ),
       ),
     );
