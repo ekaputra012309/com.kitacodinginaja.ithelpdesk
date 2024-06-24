@@ -14,8 +14,8 @@ class RequestIndex extends StatefulWidget {
 
 class _RequestIndexState extends State<RequestIndex>
     with SingleTickerProviderStateMixin {
-      final ApiService _apiService = ApiService();
-      
+  final ApiService _apiService = ApiService();
+
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
   late TabController _tabController;
@@ -25,6 +25,11 @@ class _RequestIndexState extends State<RequestIndex>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        
+      });
+    });
     _futureData = fetchpermintaan();
   }
 
@@ -36,17 +41,21 @@ class _RequestIndexState extends State<RequestIndex>
         final responseData = response.data;
 
         // Check if responseData is a Map and contains the 'data' key
-        if (responseData is Map<String, dynamic> && responseData['success'] == true && responseData.containsKey('data')) {
+        if (responseData is Map<String, dynamic> &&
+            responseData['success'] == true &&
+            responseData.containsKey('data')) {
           final List<dynamic> items = responseData['data'];
 
-          // Check if 'items' is a List and contains valid data          
-            List<DataItem> dataItems = items.map((item) => DataItem.fromJson(item)).toList();
-            return dataItems;
+          // Check if 'items' is a List and contains valid data
+          List<DataItem> dataItems =
+              items.map((item) => DataItem.fromJson(item)).toList();
+          return dataItems;
         } else {
           throw Exception('Invalid response format or missing data key');
         }
       } else {
-        debugPrint('Failed to load data. Status code: ${response.statusCode}, Body: ${response.data}');
+        debugPrint(
+            'Failed to load data. Status code: ${response.statusCode}, Body: ${response.data}');
         throw Exception('Failed to load data. Please try again later.');
       }
     } catch (e) {
@@ -55,7 +64,7 @@ class _RequestIndexState extends State<RequestIndex>
     }
   }
 
-   Future<void> _refreshData() async {
+  Future<void> _refreshData() async {
     setState(() {
       _futureData = fetchpermintaan();
     });
@@ -124,24 +133,27 @@ class _RequestIndexState extends State<RequestIndex>
                 RefreshIndicator(
                   onRefresh: _refreshData,
                   child: TimelineWidget(
-                    items: _groupItemsByDate(
-                      items.where((item) =>
-                          item.status == 'On Proses' ||
-                          item.status == 'Belum Proses').toList()),
+                    items: _groupItemsByDate(items
+                        .where((item) =>
+                            item.status == 'On Proses' ||
+                            item.status == 'Belum Proses')
+                        .toList()),
                   ),
                 ),
                 RefreshIndicator(
                   onRefresh: _refreshData,
                   child: TimelineWidget(
-                    items: _groupItemsByDate(
-                      items.where((item) => item.status == 'Pending').toList()),
+                    items: _groupItemsByDate(items
+                        .where((item) => item.status == 'Pending')
+                        .toList()),
                   ),
                 ),
                 RefreshIndicator(
                   onRefresh: _refreshData,
                   child: TimelineWidget(
-                    items: _groupItemsByDate(
-                      items.where((item) => item.status == 'Selesai').toList()),
+                    items: _groupItemsByDate(items
+                        .where((item) => item.status == 'Selesai')
+                        .toList()),
                   ),
                 ),
               ],
@@ -175,8 +187,10 @@ class TimelineWidget extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: FixedTimeline.tileBuilder(
           builder: TimelineTileBuilder.connected(
-            contentsAlign: ContentsAlign.basic, // Align the contents to the left
-            nodePositionBuilder: (context, index) => 0.0, // Align the node (line) to the left
+            contentsAlign:
+                ContentsAlign.basic, // Align the contents to the left
+            nodePositionBuilder: (context, index) =>
+                0.0, // Align the node (line) to the left
             connectorBuilder: (context, index, type) {
               return const SolidLineConnector(
                 color: CustomColors.first,
@@ -218,7 +232,8 @@ class TimelineWidget extends StatelessWidget {
                     children: <Widget>[
                       // Header
                       Padding(
-                        padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
+                        padding: const EdgeInsets.only(
+                            left: 16.0, top: 8.0, bottom: 8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -226,7 +241,8 @@ class TimelineWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('by ${item.pelapor}',
-                                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold)),
                               ],
                             ),
                             Container(
@@ -248,10 +264,15 @@ class TimelineWidget extends StatelessWidget {
                           children: [
                             ElevatedButton.icon(
                               style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(Colors.blueGrey),
-                                foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                                minimumSize: WidgetStateProperty.all<Size>(const Size(40, 28)),
-                                padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(horizontal: 8.0)),
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                    Colors.blueGrey),
+                                foregroundColor: WidgetStateProperty.all<Color>(
+                                    Colors.white),
+                                minimumSize: WidgetStateProperty.all<Size>(
+                                    const Size(40, 28)),
+                                padding: WidgetStateProperty.all<EdgeInsets>(
+                                    const EdgeInsets.symmetric(
+                                        horizontal: 8.0)),
                               ),
                               icon: const Icon(Icons.tag, size: 12),
                               label: Text(
@@ -263,10 +284,15 @@ class TimelineWidget extends StatelessWidget {
                             const SizedBox(width: 8.0),
                             ElevatedButton.icon(
                               style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(Colors.blueGrey),
-                                foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                                minimumSize: WidgetStateProperty.all<Size>(const Size(40, 28)),
-                                padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(horizontal: 8.0)),
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                    Colors.blueGrey),
+                                foregroundColor: WidgetStateProperty.all<Color>(
+                                    Colors.white),
+                                minimumSize: WidgetStateProperty.all<Size>(
+                                    const Size(40, 28)),
+                                padding: WidgetStateProperty.all<EdgeInsets>(
+                                    const EdgeInsets.symmetric(
+                                        horizontal: 8.0)),
                               ),
                               icon: const Icon(Icons.location_pin, size: 12),
                               label: Text(
@@ -278,7 +304,9 @@ class TimelineWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Divider(height: 1.0, color: CustomColors.abu.withOpacity(0.2)),
+                      Divider(
+                          height: 1.0,
+                          color: CustomColors.abu.withOpacity(0.2)),
                       // Body
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -293,13 +321,15 @@ class TimelineWidget extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text(
                                 item.kendala,
                                 style: const TextStyle(fontSize: 14),
                               ),
                             ),
-                            if (item.keterangan != '') // Conditionally display keterangan if it exists
+                            if (item.keterangan !=
+                                '') // Conditionally display keterangan if it exists
                               const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
@@ -307,9 +337,11 @@ class TimelineWidget extends StatelessWidget {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            if (item.keterangan != '') // Conditionally display keterangan if it exists
+                            if (item.keterangan !=
+                                '') // Conditionally display keterangan if it exists
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
                                   item.keterangan ?? '',
                                   style: const TextStyle(fontSize: 14),
@@ -325,7 +357,8 @@ class TimelineWidget extends StatelessWidget {
                               ),
                             if (item.solusi != '')
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
                                   item.solusi ?? '',
                                   style: const TextStyle(fontSize: 14),
@@ -337,18 +370,27 @@ class TimelineWidget extends StatelessWidget {
 
                       // Footer
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ElevatedButton.icon(
                               style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(getStatusColor(item.status)),
-                                foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                                minimumSize: WidgetStateProperty.all<Size>(const Size(36, 30)), // Set the desired width and height
-                                padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(horizontal: 8.0)), // Optional: Adjust padding for the button
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                    getStatusColor(item.status)),
+                                foregroundColor: WidgetStateProperty.all<Color>(
+                                    Colors.white),
+                                minimumSize: WidgetStateProperty.all<Size>(
+                                    const Size(36,
+                                        30)), // Set the desired width and height
+                                padding: WidgetStateProperty.all<EdgeInsets>(
+                                    const EdgeInsets.symmetric(
+                                        horizontal:
+                                            8.0)), // Optional: Adjust padding for the button
                               ),
-                              icon: const Icon(Icons.check, size: 16), // Check icon
+                              icon: const Icon(Icons.check,
+                                  size: 16), // Check icon
                               label: Text(
                                 item.status,
                                 style: const TextStyle(fontSize: 12.0),
@@ -371,7 +413,6 @@ class TimelineWidget extends StatelessWidget {
     );
   }
 }
-
 
 // This function returns the color based on the status of the item.
 Color getStatusColor(String status) {
