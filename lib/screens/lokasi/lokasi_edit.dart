@@ -149,14 +149,16 @@ class _LokasiEditState extends State<LokasiEdit> {
               key: _formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
+                  const Text('Nama Lokasi'),
+                  const SizedBox(height: 16),
                   TextFormField(
                     controller: _locationname,
                     onChanged: _onlocationnameChanged,
                     decoration: const InputDecoration(
-                      labelText: 'Nama Lokasi',
+                      hintText: 'Nama Lokasi',
                       border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.list_rounded),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -166,11 +168,12 @@ class _LokasiEditState extends State<LokasiEdit> {
                     },
                   ),
                   const SizedBox(height: 16),
+                  const Text('Pilih Lantai'),
+                  const SizedBox(height: 16),
                   DropdownButtonFormField<int>(
                     decoration: const InputDecoration(
-                      labelText: 'Pilih lantai',
+                      hintText: 'Pilih lantai',
                       border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.list),
                     ),
                     value: _selectedFloorId,
                     onChanged: (value) {

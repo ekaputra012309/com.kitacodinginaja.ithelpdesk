@@ -117,25 +117,28 @@ Widget build(BuildContext context) {
               child: ReactiveForm(
                 formGroup: form,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
+                    const Text('Nama Lengkap'),
+                    const SizedBox(height: 16),
                     ReactiveTextField<String>(
                       formControlName: 'name',
                       decoration: const InputDecoration(
-                        labelText: 'Nama Lengkap',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.keyboard),
+                        hintText: 'Nama Lengkap',
+                        border: OutlineInputBorder(),                        
                       ),
                       validationMessages: {
                         'required': (error) => 'Please enter some text',
                       },
                     ),
                     const SizedBox(height: 16),
+                    const Text('Email'),
+                    const SizedBox(height: 16),
                     ReactiveTextField<String>(
                       formControlName: 'email',
                       decoration: const InputDecoration(
-                        labelText: 'Email',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.email),
+                        hintText: 'Email',
+                        border: OutlineInputBorder(),                        
                       ),
                       validationMessages: {
                         'required': (error) => 'Please enter some text',
@@ -143,13 +146,14 @@ Widget build(BuildContext context) {
                       },
                     ),
                     const SizedBox(height: 16),
+                    const Text('Password'),
+                    const SizedBox(height: 16),
                     ReactiveTextField<String>(
                       formControlName: 'password',
                       obscureText: passwordVisible,
                       decoration: InputDecoration(
-                        labelText: 'Password',
-                        border: const OutlineInputBorder(),
-                        prefixIcon: const Icon(Icons.lock),
+                        hintText: 'Password',
+                        border: const OutlineInputBorder(),                        
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -168,12 +172,13 @@ Widget build(BuildContext context) {
                       },
                     ),
                     const SizedBox(height: 16),
+                    const Text('Pilih Role'),
+                    const SizedBox(height: 16),
                     ReactiveDropdownField<String>(
                       formControlName: 'selectedRole',
                       decoration: const InputDecoration(
-                        labelText: 'Pilih Role',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.list),
+                        hintText: 'Pilih Role',
+                        border: OutlineInputBorder(),                        
                       ),
                       items: _role
                           .map((role) => DropdownMenuItem<String>(

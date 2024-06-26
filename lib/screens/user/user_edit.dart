@@ -109,117 +109,123 @@ class _UserEditState extends State<UserEdit> {
         backgroundColor: CustomColors.second,
         foregroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ReactiveForm(
-          formGroup: form,
-          child: Column(
-            children: <Widget>[
-              ReactiveTextField<String>(
-                formControlName: 'name',
-                decoration: const InputDecoration(
-                  labelText: 'Nama Lengkap',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.keyboard),
-                ),
-                validationMessages: {
-                  'required': (error) => 'Please enter some text',
-                },
-              ),
-              const SizedBox(height: 16),
-              ReactiveTextField<String>(
-                formControlName: 'email',
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
-                ),
-                validationMessages: {
-                  'required': (error) => 'Please enter some text',
-                  'email': (error) => 'The email value must be a valid email',
-                },
-              ),
-              const SizedBox(height: 16),
-              ReactiveTextField<String>(
-                formControlName: 'password',
-                obscureText: passwordVisible,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(
-                        () {
-                          passwordVisible = !passwordVisible;
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ReactiveForm(
+                  formGroup: form,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const Text('Nama Lengkap'),
+                      const SizedBox(height: 16),
+                      ReactiveTextField<String>(
+                        formControlName: 'name',
+                        decoration: const InputDecoration(
+                          hintText: 'Nama Lengkap',
+                          border: OutlineInputBorder(),                  
+                        ),
+                        validationMessages: {
+                          'required': (error) => 'Please enter some text',
                         },
-                      );
-                    },
-                    icon: Icon(passwordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                  ),
-                ),
-                validationMessages: {
-                  'required': (error) => 'Please enter some text',
-                  'minLength': (error) =>
-                      'The password must have at least 8 characters',
-                },
-              ),
-              const SizedBox(height: 16),
-              ReactiveDropdownField<String>(
-                formControlName: 'selectedRole',
-                decoration: const InputDecoration(
-                  labelText: 'Pilih Role',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.list),
-                ),
-                items: _role
-                    .map((role) => DropdownMenuItem<String>(
-                          value: role,
-                          child: Text(role),
-                        ))
-                    .toList(),
-                validationMessages: {
-                  'required': (error) => 'Please select a role',
-                },
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomColors.second,
-                      foregroundColor: CustomColors.putih,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 16),
-                    ),
-                    onPressed: _update,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.save),
-                          SizedBox(
-                              width:
-                                  8), // Add some spacing between the icon and text
-                          Text(
-                            'Update Data',
+                      const SizedBox(height: 16),
+                      const Text('Email'),
+                      const SizedBox(height: 16),
+                      ReactiveTextField<String>(
+                        formControlName: 'email',
+                        decoration: const InputDecoration(
+                          hintText: 'Email',
+                          border: OutlineInputBorder(),                  
+                        ),
+                        validationMessages: {
+                          'required': (error) => 'Please enter some text',
+                          'email': (error) => 'The email value must be a valid email',
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      const Text('Password'),
+                      const SizedBox(height: 16),
+                      ReactiveTextField<String>(
+                        formControlName: 'password',
+                        obscureText: passwordVisible,
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                          border: const OutlineInputBorder(),                  
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(
+                                () {
+                                  passwordVisible = !passwordVisible;
+                                },
+                              );
+                            },
+                            icon: Icon(passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off),
                           ),
-                        ],
+                        ),
+                        validationMessages: {
+                          'required': (error) => 'Please enter some text',
+                          'minLength': (error) =>
+                              'The password must have at least 8 characters',
+                        },
                       ),
-                    ),
+                      const SizedBox(height: 16),
+                      const Text('Pilih Role'),
+                      const SizedBox(height: 16),
+                      ReactiveDropdownField<String>(
+                        formControlName: 'selectedRole',
+                        decoration: const InputDecoration(
+                          hintText: 'Pilih Role',
+                          border: OutlineInputBorder(),                  
+                        ),
+                        items: _role
+                            .map((role) => DropdownMenuItem<String>(
+                                  value: role,
+                                  child: Text(role),
+                                ))
+                            .toList(),
+                        validationMessages: {
+                          'required': (error) => 'Please select a role',
+                        },
+                      ),
+                      const SizedBox(height: 16),                      
+                    ],
                   ),
                 ),
               ),
-            ],
+            ),
+          ),
+          Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: CustomColors.second,
+              foregroundColor: CustomColors.putih,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            ),
+            onPressed: _update,
+            child: const Padding(
+              padding: EdgeInsets.symmetric(vertical: 4.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.save),
+                  SizedBox(width: 8), // Add some spacing between the icon and text
+                  Text('Update Data'),
+                ],
+              ),
+            ),
           ),
         ),
+        ],
       ),
     );
   }

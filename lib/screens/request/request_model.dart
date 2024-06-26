@@ -9,6 +9,7 @@ class DataItem {
   final String? keterangan;
   final String? solusi;
   final int userId;
+  final String? userName;
   final String createdAt;
   final String updatedAt;
   final Lokasi? lokasi; // Make Lokasi nullable
@@ -26,6 +27,7 @@ class DataItem {
     this.keterangan,
     this.solusi,
     required this.userId,
+    this.userName,
     required this.createdAt,
     required this.updatedAt,
     this.lokasi, // Allow null
@@ -45,6 +47,7 @@ class DataItem {
       keterangan: json['keterangan'],
       solusi: json['solusi'],
       userId: json['user_id'],
+      userName: json['user_name'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       lokasi: json['lokasi'] != null ? Lokasi.fromJson(json['lokasi']) : null,

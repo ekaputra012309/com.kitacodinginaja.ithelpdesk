@@ -23,7 +23,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
     });
   }
 
-  Widget _buildBottomNavigationBarItem({
+    Widget _buildBottomNavigationBarItem({
     required int index,
     required IconData icon,
     required String label,
@@ -40,19 +40,20 @@ class _BottomnavbarState extends State<Bottomnavbar> {
             color: isSelected ? CustomColors.second : CustomColors.hitam,
           ),
           const SizedBox(height: 4.0),
-          Flexible(
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 12.0,
-                fontWeight: FontWeight.bold,
-                color: isSelected ? CustomColors.second : CustomColors.hitam,
+          if (isSelected)
+            Flexible(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.bold,
+                  color: isSelected ? CustomColors.second : CustomColors.hitam,
+                ),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2, // Allow label to wrap into two lines if necessary
               ),
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2, // Allow label to wrap into two lines if necessary
             ),
-          ),
         ],
       ),
     );

@@ -99,25 +99,28 @@ class _KategoriEditState extends State<KategoriEdit> {
         child: ReactiveForm(
           formGroup: form,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              const Text('(#) Hashtag'),
+              const SizedBox(height: 16),
               ReactiveTextField<String>(
                 formControlName: 'hashtag',
                 decoration: const InputDecoration(
-                  labelText: '(#) Hashtag',
+                  hintText: '(#) Hashtag',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.keyboard),
                 ),
                 validationMessages: {
                   'required': (error) => 'Please enter some text',
                 },
               ),
               const SizedBox(height: 16),
+              const Text('Pilih Kategori'),
+              const SizedBox(height: 16),
               ReactiveDropdownField<String>(
                 formControlName: 'selectedKategori',
                 decoration: const InputDecoration(
-                  labelText: 'Pilih Kategori',
+                  hintText: 'Pilih Kategori',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.list),
                 ),
                 items: _kategori
                     .map((kategori) => DropdownMenuItem<String>(

@@ -94,13 +94,15 @@ class _LantaiCreateState extends State<LantaiCreate> {
         child: ReactiveForm(
           formGroup: form,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              const Text('Nama Lantai'),
+              const SizedBox(height: 16),
               ReactiveTextField<String>(
                 formControlName: 'floorname',
                 decoration: const InputDecoration(
-                  labelText: 'Nama Lantai',
+                  hintText: 'Nama Lantai',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.list_rounded),
                 ),
                 validationMessages: {
                   'required': (error) => 'Please enter some text',

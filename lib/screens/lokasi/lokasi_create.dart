@@ -122,13 +122,15 @@ class _LokasiCreateState extends State<LokasiCreate> {
               key: _formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
+                  const Text('Nama Lokasi'),
+                  const SizedBox(height: 16),
                   TextFormField(
                     controller: _locationname,
                     decoration: const InputDecoration(
-                      labelText: 'Nama lokasi',
+                      hintText: 'Nama lokasi',
                       border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.location_pin),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -138,11 +140,12 @@ class _LokasiCreateState extends State<LokasiCreate> {
                     },
                   ),
                   const SizedBox(height: 16),
+                  const Text('Pilih Lantai'),
+                  const SizedBox(height: 16),
                   DropdownButtonFormField<int>(
                     decoration: const InputDecoration(
-                      labelText: 'Pilih lantai',
+                      hintText: 'Pilih lantai',
                       border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.list),
                     ),
                     value: _selectedFloorId,
                     onChanged: (value) {
