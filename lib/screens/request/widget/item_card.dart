@@ -20,7 +20,7 @@ class ItemCard extends StatelessWidget {
   Color getStatusColor(String status) {
     switch (status) {
       case 'Pending':
-        return Colors.red;
+        return Colors.redAccent;
       case 'On Proses':
         return Colors.blue;
       case 'Selesai':
@@ -55,7 +55,7 @@ class ItemCard extends StatelessWidget {
           scaffoldMessengerKey.currentState?.showSnackBar(
             const SnackBar(
               content: Text('Failed to update status'),
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.redAccent,
             ),
           );
         }
@@ -64,7 +64,7 @@ class ItemCard extends StatelessWidget {
         scaffoldMessengerKey.currentState?.showSnackBar(
           const SnackBar(
             content: Text('Error updating status'),
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.redAccent,
           ),
         );
       }
@@ -139,7 +139,7 @@ class ItemCard extends StatelessWidget {
                           scaffoldMessengerKey.currentState?.showSnackBar(
                             const SnackBar(
                               content: Text('Failed to update status'),
-                              backgroundColor: Colors.red,
+                              backgroundColor: Colors.redAccent,
                             ),
                           );
                         }
@@ -148,7 +148,7 @@ class ItemCard extends StatelessWidget {
                         scaffoldMessengerKey.currentState?.showSnackBar(
                           const SnackBar(
                             content: Text('Error updating status'),
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.redAccent,
                           ),
                         );
                       }
@@ -200,6 +200,7 @@ class ItemCard extends StatelessWidget {
         scaffoldMessengerKey.currentState?.showSnackBar(
           const SnackBar(
             content: Text('Permintaan deleted successfully'),
+            backgroundColor: Colors.redAccent,
           ),
         );
         onDelete();
@@ -208,7 +209,7 @@ class ItemCard extends StatelessWidget {
         scaffoldMessengerKey.currentState?.showSnackBar(
           SnackBar(
             content: Text(message),
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.redAccent,
           ),
         );
       }
@@ -217,7 +218,7 @@ class ItemCard extends StatelessWidget {
       scaffoldMessengerKey.currentState?.showSnackBar(
         const SnackBar(
           content: Text('Error deleting permintaan'),
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.redAccent,
         ),
       );
     }
