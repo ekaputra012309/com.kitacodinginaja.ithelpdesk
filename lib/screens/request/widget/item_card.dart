@@ -81,8 +81,9 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: CustomColors.putih,
       elevation: 3,
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         children: [
           Padding(
@@ -120,7 +121,6 @@ class ItemCard extends StatelessWidget {
                               ListTile(
                                 leading: const Icon(Icons.edit, color: Colors.lightBlueAccent),
                                 title: const Text('Edit'),
-                                trailing: Text('${item.id}'),
                                 onTap: () {
                                   Navigator.pop(context);
                                 },
@@ -129,7 +129,6 @@ class ItemCard extends StatelessWidget {
                               ListTile(
                                 leading: const Icon(Icons.rotate_right_rounded, color: Colors.blueAccent),
                                 title: const Text('Proses'),
-                                trailing: Text('${item.id}'),
                                 onTap: () {
                                   Navigator.pop(context);
                                 },
@@ -137,7 +136,6 @@ class ItemCard extends StatelessWidget {
                               ListTile(
                                 leading: const Icon(Icons.stop_circle_rounded, color: Colors.redAccent),
                                 title: const Text('Pending'),
-                                trailing: Text('${item.id}'),
                                 onTap: () {
                                   Navigator.pop(context);
                                 },
@@ -145,7 +143,6 @@ class ItemCard extends StatelessWidget {
                               ListTile(
                                 leading: const Icon(Icons.check_circle_rounded, color: Colors.teal),
                                 title: const Text('Selesai'),
-                                trailing: Text('${item.id}'),
                                 onTap: () {
                                   Navigator.pop(context);
                                 },
@@ -175,7 +172,7 @@ class ItemCard extends StatelessWidget {
                   ),
                   icon: const Icon(Icons.tag, size: 12),
                   label: Text(
-                    '${item.kategori}',
+                    item.kategori!.categoryName,
                     style: const TextStyle(fontSize: 12.0),
                   ),
                   onPressed: () {},
@@ -190,7 +187,7 @@ class ItemCard extends StatelessWidget {
                   ),
                   icon: const Icon(Icons.location_pin, size: 12),
                   label: Text(
-                    '${item.lokasi}',
+                    item.lokasi!.locationName,
                     style: const TextStyle(fontSize: 12.0),
                   ),
                   onPressed: () {},
