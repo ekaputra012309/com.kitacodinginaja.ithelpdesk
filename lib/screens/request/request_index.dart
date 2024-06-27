@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../constans.dart';
 import 'request_create.dart';
-import 'request_model.dart';
+import 'widget/request_model.dart';
 import 'widget/item_card.dart'; // Import your ItemCard widget
 
 class RequestIndex extends StatefulWidget {
@@ -99,73 +99,76 @@ class _RequestIndexState extends State<RequestIndex>
             ],
           ),
         ),
-        body: FutureBuilder<List<DataItem>>(
-          future: _futureData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('No data available'));
-            } else {
-              List<DataItem> items = snapshot.data!;
-              return TabBarView(
-                controller: _tabController,
-                children: [
-                  RefreshIndicator(
-                    onRefresh: _refreshData,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: ListView(
-                        children: filterItemsByMultipleStatuses(items, ['Belum Proses', 'On Proses'])
-                            .map((item) => ItemCard(
-                                  key: ValueKey(item.id),
-                                  item: item,
-                                  scaffoldMessengerKey: _scaffoldMessengerKey,
-                                  onDelete: _refreshData,
-                                ))
-                            .toList(),
+        body: Container(
+          color: CustomColors.abu,
+          child: FutureBuilder<List<DataItem>>(
+            future: _futureData,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('No data available'));
+              } else {
+                List<DataItem> items = snapshot.data!;
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    RefreshIndicator(
+                      onRefresh: _refreshData,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: ListView(
+                          children: filterItemsByMultipleStatuses(items, ['Belum Proses', 'On Proses'])
+                              .map((item) => ItemCard(
+                                    key: ValueKey(item.id),
+                                    item: item,
+                                    scaffoldMessengerKey: _scaffoldMessengerKey,
+                                    onDelete: _refreshData,
+                                  ))
+                              .toList(),
+                        ),
                       ),
                     ),
-                  ),
-                  RefreshIndicator(
-                    onRefresh: _refreshData,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: ListView(
-                        children: filterItemsByMultipleStatuses(items, ['Pending'])
-                            .map((item) => ItemCard(
-                                  key: ValueKey(item.id),
-                                  item: item,
-                                  scaffoldMessengerKey: _scaffoldMessengerKey,
-                                  onDelete: _refreshData,
-                                ))
-                            .toList(),
+                    RefreshIndicator(
+                      onRefresh: _refreshData,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: ListView(
+                          children: filterItemsByMultipleStatuses(items, ['Pending'])
+                              .map((item) => ItemCard(
+                                    key: ValueKey(item.id),
+                                    item: item,
+                                    scaffoldMessengerKey: _scaffoldMessengerKey,
+                                    onDelete: _refreshData,
+                                  ))
+                              .toList(),
+                        ),
                       ),
                     ),
-                  ),
-                  RefreshIndicator(
-                    onRefresh: _refreshData,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: ListView(
-                        children: filterItemsByMultipleStatuses(items, ['Selesai'])
-                            .map((item) => ItemCard(
-                                  key: ValueKey(item.id),
-                                  item: item,
-                                  scaffoldMessengerKey: _scaffoldMessengerKey,
-                                  onDelete: _refreshData,
-                                ))
-                            .toList(),
+                    RefreshIndicator(
+                      onRefresh: _refreshData,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: ListView(
+                          children: filterItemsByMultipleStatuses(items, ['Selesai'])
+                              .map((item) => ItemCard(
+                                    key: ValueKey(item.id),
+                                    item: item,
+                                    scaffoldMessengerKey: _scaffoldMessengerKey,
+                                    onDelete: _refreshData,
+                                  ))
+                              .toList(),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              );
-
-            }
-          },
+                  ],
+                );
+          
+              }
+            },
+          ),
         ),
         floatingActionButton: _tabController.index == 0
             ? FloatingActionButton(

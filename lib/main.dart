@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:myapp/screens/request/request_index.dart';
 import 'package:provider/provider.dart';
 
 import 'constans.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const Splashscreen(),
         '/dash': (context) => const Bottomnavbar(),
         '/about': (context) => const About(),
+        '/request': (context) => const RequestIndex(),
       },
     );
   }

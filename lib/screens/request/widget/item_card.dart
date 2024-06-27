@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../constans.dart';
-import '../request_model.dart';
+import '../request_edit.dart';
+import 'request_model.dart';
 
 class ItemCard extends StatelessWidget {
   final DataItem item;
@@ -239,8 +240,19 @@ class ItemCard extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.edit, color: Colors.lightBlueAccent),
             title: const Text('Edit'),
-            onTap: () {
-              Navigator.pop(context);
+            onTap: () async {
+              await Navigator.push(
+              context,
+                MaterialPageRoute(
+                  builder: (context) => RequestEdit(
+                    item: item, // Pass the required item data
+                    scaffoldMessengerKey: scaffoldMessengerKey, // Pass the scaffoldMessengerKey if needed
+                    onRequestUpdated: () {
+                      onDelete();
+                    },
+                  ),
+                ),
+              );
             },
           ),
           const Divider(height: 1.0),
