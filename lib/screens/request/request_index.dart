@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../constans.dart';
 import 'request_create.dart';
 import 'request_model.dart';
-import 'widget/request_widget.dart';
+import 'widget/timeline_widget.dart';
 
 class RequestIndex extends StatefulWidget {
   const RequestIndex({super.key});
@@ -16,9 +16,7 @@ class RequestIndex extends StatefulWidget {
 class _RequestIndexState extends State<RequestIndex>
     with SingleTickerProviderStateMixin {
   final ApiService _apiService = ApiService();
-
-  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
-      GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   late TabController _tabController;
   late Future<List<DataItem>> _futureData;
 
@@ -27,9 +25,7 @@ class _RequestIndexState extends State<RequestIndex>
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
-      setState(() {
-        
-      });
+      setState(() {});
     });
     _futureData = fetchpermintaan();
   }
@@ -41,22 +37,17 @@ class _RequestIndexState extends State<RequestIndex>
       if (response.statusCode == 200) {
         final responseData = response.data;
 
-        // Check if responseData is a Map and contains the 'data' key
         if (responseData is Map<String, dynamic> &&
             responseData['success'] == true &&
             responseData.containsKey('data')) {
           final List<dynamic> items = responseData['data'];
-
-          // Check if 'items' is a List and contains valid data
-          List<DataItem> dataItems =
-              items.map((item) => DataItem.fromJson(item)).toList();
+          List<DataItem> dataItems = items.map((item) => DataItem.fromJson(item)).toList();
           return dataItems;
         } else {
           throw Exception('Invalid response format or missing data key');
         }
       } else {
-        debugPrint(
-            'Failed to load data. Status code: ${response.statusCode}, Body: ${response.data}');
+        debugPrint('Failed to load data. Status code: ${response.statusCode}, Body: ${response.data}');
         throw Exception('Failed to load data. Please try again later.');
       }
     } catch (e) {
@@ -73,7 +64,6 @@ class _RequestIndexState extends State<RequestIndex>
   }
 
   List<dynamic> _groupItemsByDate(List<DataItem> items) {
-    // Group items by date
     Map<String, List<DataItem>> groupedItems = {};
     for (var item in items) {
       if (!groupedItems.containsKey(item.createdAt.substring(0, 10))) {
@@ -82,7 +72,6 @@ class _RequestIndexState extends State<RequestIndex>
       groupedItems[item.createdAt.substring(0, 10)]!.add(item);
     }
 
-    // Flatten the grouped items into a single list with date headers
     List<dynamic> timelineItems = [];
     groupedItems.forEach((date, items) {
       timelineItems.add(date);
@@ -135,30 +124,25 @@ class _RequestIndexState extends State<RequestIndex>
                   RefreshIndicator(
                     onRefresh: _refreshData,
                     child: TimelineWidget(
-                      refreshData: fetchpermintaan(),
-                      items: _groupItemsByDate(items
-                          .where((item) =>
-                              item.status == 'On Proses' ||
-                              item.status == 'Belum Proses')
-                          .toList()),
+                      scaffoldMessengerKey: _scaffoldMessengerKey,
+                      onRefresh: _refreshData,
+                      items: _groupItemsByDate(items.where((item) => item.status == 'On Proses' || item.status == 'Belum Proses').toList()),
                     ),
                   ),
                   RefreshIndicator(
                     onRefresh: _refreshData,
                     child: TimelineWidget(
-                      refreshData: fetchpermintaan(),
-                      items: _groupItemsByDate(items
-                          .where((item) => item.status == 'Pending')
-                          .toList()),
+                      scaffoldMessengerKey: _scaffoldMessengerKey,
+                      onRefresh: _refreshData,
+                      items: _groupItemsByDate(items.where((item) => item.status == 'Pending').toList()),
                     ),
                   ),
                   RefreshIndicator(
                     onRefresh: _refreshData,
                     child: TimelineWidget(
-                      refreshData: fetchpermintaan(),
-                      items: _groupItemsByDate(items
-                          .where((item) => item.status == 'Selesai')
-                          .toList()),
+                      scaffoldMessengerKey: _scaffoldMessengerKey,
+                      onRefresh: _refreshData,
+                      items: _groupItemsByDate(items.where((item) => item.status == 'Selesai').toList()),
                     ),
                   ),
                 ],
@@ -169,18 +153,17 @@ class _RequestIndexState extends State<RequestIndex>
         floatingActionButton: _tabController.index == 0
             ? FloatingActionButton(
                 onPressed: () async {
-                   await Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => RequestCreate(
                         scaffoldMessengerKey: _scaffoldMessengerKey,
                         onRequestAdded: () {
-                          // This callback is now unnecessary.
+                          _refreshData();
                         },
                       ),
                     ),
                   );
-                  // After returning from RequestCreate, refresh the page
                   setState(() {
                     _refreshData();
                   });
