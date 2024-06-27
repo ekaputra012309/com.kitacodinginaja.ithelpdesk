@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../constans.dart';
 import 'request_create.dart';
 import 'request_model.dart';
-import 'widget/timeline_widget.dart';
+import 'widget/item_card.dart'; // Import your ItemCard widget
 
 class RequestIndex extends StatefulWidget {
   const RequestIndex({super.key});
@@ -16,7 +16,8 @@ class RequestIndex extends StatefulWidget {
 class _RequestIndexState extends State<RequestIndex>
     with SingleTickerProviderStateMixin {
   final ApiService _apiService = ApiService();
-  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
   late TabController _tabController;
   late Future<List<DataItem>> _futureData;
 
@@ -41,14 +42,19 @@ class _RequestIndexState extends State<RequestIndex>
             responseData['success'] == true &&
             responseData.containsKey('data')) {
           final List<dynamic> items = responseData['data'];
-          List<DataItem> dataItems = items.map((item) => DataItem.fromJson(item)).toList();
+          List<DataItem> dataItems = items
+              .map((item) => DataItem.fromJson(item))
+              .toList();
           return dataItems;
         } else {
-          throw Exception('Invalid response format or missing data key');
+          throw Exception(
+              'Invalid response format or missing data key');
         }
       } else {
-        debugPrint('Failed to load data. Status code: ${response.statusCode}, Body: ${response.data}');
-        throw Exception('Failed to load data. Please try again later.');
+        debugPrint(
+            'Failed to load data. Status code: ${response.statusCode}, Body: ${response.data}');
+        throw Exception(
+            'Failed to load data. Please try again later.');
       }
     } catch (e) {
       debugPrint('Error during fetchpermintaan: $e');
@@ -63,22 +69,8 @@ class _RequestIndexState extends State<RequestIndex>
     await _futureData;
   }
 
-  List<dynamic> _groupItemsByDate(List<DataItem> items) {
-    Map<String, List<DataItem>> groupedItems = {};
-    for (var item in items) {
-      if (!groupedItems.containsKey(item.createdAt.substring(0, 10))) {
-        groupedItems[item.createdAt.substring(0, 10)] = [];
-      }
-      groupedItems[item.createdAt.substring(0, 10)]!.add(item);
-    }
-
-    List<dynamic> timelineItems = [];
-    groupedItems.forEach((date, items) {
-      timelineItems.add(date);
-      timelineItems.addAll(items);
-    });
-
-    return timelineItems;
+  List<DataItem> filterItemsByMultipleStatuses(List<DataItem> items, List<String> statuses) {
+    return items.where((item) => statuses.contains(item.status)).toList();
   }
 
   @override
@@ -123,30 +115,55 @@ class _RequestIndexState extends State<RequestIndex>
                 children: [
                   RefreshIndicator(
                     onRefresh: _refreshData,
-                    child: TimelineWidget(
-                      scaffoldMessengerKey: _scaffoldMessengerKey,
-                      onRefresh: _refreshData,
-                      items: _groupItemsByDate(items.where((item) => item.status == 'On Proses' || item.status == 'Belum Proses').toList()),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: ListView(
+                        children: filterItemsByMultipleStatuses(items, ['Belum Proses', 'On Proses'])
+                            .map((item) => ItemCard(
+                                  key: ValueKey(item.id),
+                                  item: item,
+                                  scaffoldMessengerKey: _scaffoldMessengerKey,
+                                  onDelete: _refreshData,
+                                ))
+                            .toList(),
+                      ),
                     ),
                   ),
                   RefreshIndicator(
                     onRefresh: _refreshData,
-                    child: TimelineWidget(
-                      scaffoldMessengerKey: _scaffoldMessengerKey,
-                      onRefresh: _refreshData,
-                      items: _groupItemsByDate(items.where((item) => item.status == 'Pending').toList()),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: ListView(
+                        children: filterItemsByMultipleStatuses(items, ['Pending'])
+                            .map((item) => ItemCard(
+                                  key: ValueKey(item.id),
+                                  item: item,
+                                  scaffoldMessengerKey: _scaffoldMessengerKey,
+                                  onDelete: _refreshData,
+                                ))
+                            .toList(),
+                      ),
                     ),
                   ),
                   RefreshIndicator(
                     onRefresh: _refreshData,
-                    child: TimelineWidget(
-                      scaffoldMessengerKey: _scaffoldMessengerKey,
-                      onRefresh: _refreshData,
-                      items: _groupItemsByDate(items.where((item) => item.status == 'Selesai').toList()),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: ListView(
+                        children: filterItemsByMultipleStatuses(items, ['Selesai'])
+                            .map((item) => ItemCard(
+                                  key: ValueKey(item.id),
+                                  item: item,
+                                  scaffoldMessengerKey: _scaffoldMessengerKey,
+                                  onDelete: _refreshData,
+                                ))
+                            .toList(),
+                      ),
                     ),
                   ),
                 ],
               );
+
             }
           },
         ),

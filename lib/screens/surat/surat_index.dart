@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constans.dart';
+
 class SuratIndex extends StatelessWidget {
   const SuratIndex({super.key});
 
@@ -8,12 +10,14 @@ class SuratIndex extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tanda Terima Barang'),
+        backgroundColor: CustomColors.putih,
+        foregroundColor: CustomColors.second,
       ),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('tanda terima barang page'),
+            Text('coming soon'),
           ],
         ),
       ),

@@ -36,7 +36,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
         children: [
           Icon(
             icon,
-            size: isSelected ? 16.0 : 24.0, // Adjust sizes
+            size: isSelected ? 28.0 : 28.0, // Adjust sizes
             color: isSelected ? CustomColors.second : CustomColors.hitam,
           ),
           const SizedBox(height: 4.0),
@@ -45,7 +45,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
               child: Text(
                 label,
                 style: TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 8.0,
                   fontWeight: FontWeight.bold,
                   color: isSelected ? CustomColors.second : CustomColors.hitam,
                 ),
@@ -131,7 +131,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
       body: pages[_selectedIndex],
       bottomNavigationBar: Container(
         color: CustomColors.putih,
-        height: 90.0, // Adjust height if needed
+        height: 60.0, // Adjust height if needed
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: items,
