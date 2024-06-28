@@ -53,20 +53,23 @@ class _MenuState extends State<Menu> {
         backgroundColor: CustomColors.putih,
         foregroundColor: CustomColors.second,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 8.0),
-              buildSectionTitle('Master Data'),
-              const SizedBox(height: 8.0),
-              buildGridMenu(),
-              const SizedBox(height: 16.0),
-              buildSectionTitle('Transaction'),
-              const SizedBox(height: 8.0),
-              buildListMenu(),
-            ],
+      body: Container(
+        color: CustomColors.abu,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 8.0),
+                buildSectionTitle('Master Data'),
+                const SizedBox(height: 8.0),
+                buildGridMenu(),
+                const SizedBox(height: 16.0),
+                buildSectionTitle('Transaction'),
+                const SizedBox(height: 8.0),
+                buildListMenu(),
+              ],
+            ),
           ),
         ),
       ),

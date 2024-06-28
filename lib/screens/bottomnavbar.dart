@@ -39,21 +39,18 @@ class _BottomnavbarState extends State<Bottomnavbar> {
             size: isSelected ? 28.0 : 28.0, // Adjust sizes
             color: isSelected ? CustomColors.second : CustomColors.hitam,
           ),
-          const SizedBox(height: 4.0),
-          if (isSelected)
-            Flexible(
-              child: Text(
-                label,
-                style: TextStyle(
-                  fontSize: 8.0,
-                  fontWeight: FontWeight.bold,
-                  color: isSelected ? CustomColors.second : CustomColors.hitam,
-                ),
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2, // Allow label to wrap into two lines if necessary
-              ),
+          const SizedBox(height: 4.0),          
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 8.0,
+              fontWeight: FontWeight.bold,
+              color: isSelected ? CustomColors.second : CustomColors.hitam,
             ),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2, // Allow label to wrap into two lines if necessary
+          ),
         ],
       ),
     );

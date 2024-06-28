@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constans.dart';
 import '../request_edit.dart';
@@ -225,71 +226,102 @@ class ItemCard extends StatelessWidget {
   }
 
   Widget _buildActionTiles(String currentStatus, BuildContext context) {
+    final userDataProvider = Provider.of<UserDataProvider>(context);
+    final userRole = userDataProvider.role;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(
-            leading: const Icon(Icons.delete, color: Colors.redAccent),
-            title: const Text('Delete'),
-            onTap: () {
-              Navigator.of(context).pop();
-              _showDeleteConfirmationDialog(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.edit, color: Colors.lightBlueAccent),
-            title: const Text('Edit'),
-            onTap: () async {
-              await Navigator.push(
-              context,
-                MaterialPageRoute(
-                  builder: (context) => RequestEdit(
-                    item: item, // Pass the required item data
-                    scaffoldMessengerKey: scaffoldMessengerKey, // Pass the scaffoldMessengerKey if needed
-                    onRequestUpdated: () {
-                      onDelete();
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
-          const Divider(height: 1.0),
-          ListTile(
-            leading: const Icon(Icons.rotate_right_rounded, color: Colors.blueAccent),
-            title: const Text('Proses'),
-            onTap: currentStatus != 'Pending' && currentStatus != 'Selesai' && currentStatus != 'On Proses'
-                ? () {
-                    Navigator.pop(context);
-                    _updateStatus(context, 'proses');
-                  }
-                : null,
-            enabled: currentStatus != 'Pending' && currentStatus != 'Selesai' && currentStatus != 'On Proses',
-          ),
-          ListTile(
-            leading: const Icon(Icons.stop_circle_rounded, color: Colors.redAccent),
-            title: const Text('Pending'),
-            onTap: currentStatus != 'Pending' && currentStatus != 'Selesai'
-                ? () {
-                    Navigator.pop(context);
-                    _updateStatus(context, 'pending');
-                  }
-                : null,
-            enabled: currentStatus != 'Pending' && currentStatus != 'Selesai',
-          ),
-          ListTile(
-            leading: const Icon(Icons.check_circle_rounded, color: Colors.teal),
-            title: const Text('Selesai'),
-            onTap: currentStatus != 'Selesai'
-                ? () {
-                    Navigator.pop(context);
-                    _updateStatus(context, 'selesai');
-                  }
-                : null,
-            enabled: currentStatus != 'Selesai',
-          ),
+          if (userRole == 'User') ...[
+            ListTile(
+              leading: const Icon(Icons.edit, color: Colors.lightBlueAccent),
+              title: const Text('Edit'),
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                   MaterialPageRoute(
+                    builder: (context) => RequestEdit(
+                      item: item, // Pass the required item data
+                      scaffoldMessengerKey: scaffoldMessengerKey, // Pass the scaffoldMessengerKey if needed
+                      onRequestUpdated: () {
+                        onDelete();
+                      },
+                    ),
+                   ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete, color: Colors.redAccent),
+              title: const Text('Delete'),
+              onTap: () {
+                Navigator.of(context).pop();
+                _showDeleteConfirmationDialog(context); // Implement _showDeleteConfirmationDialog
+              },
+            ),
+          ] else ...[
+            ListTile(
+              leading: const Icon(Icons.delete, color: Colors.redAccent),
+              title: const Text('Delete'),
+              onTap: () {
+                Navigator.of(context).pop();
+                _showDeleteConfirmationDialog(context); // Implement _showDeleteConfirmationDialog
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.edit, color: Colors.lightBlueAccent),
+              title: const Text('Edit'),
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RequestEdit(
+                      item: item, // Pass the required item data
+                      scaffoldMessengerKey: scaffoldMessengerKey, // Pass the scaffoldMessengerKey if needed
+                      onRequestUpdated: () {
+                        onDelete();
+                      },
+                    ),
+                   ),
+                );
+              },
+            ),
+            const Divider(height: 1.0),
+            ListTile(
+              leading: const Icon(Icons.rotate_right_rounded, color: Colors.blueAccent),
+              title: const Text('Proses'),
+              onTap: currentStatus != 'Pending' && currentStatus != 'Selesai' && currentStatus != 'On Proses'
+                  ? () {
+                      Navigator.pop(context);
+                      _updateStatus(context, 'proses'); // Implement _updateStatus
+                    }
+                  : null,
+              enabled: currentStatus != 'Pending' && currentStatus != 'Selesai' && currentStatus != 'On Proses',
+            ),
+            ListTile(
+              leading: const Icon(Icons.stop_circle_rounded, color: Colors.redAccent),
+              title: const Text('Pending'),
+              onTap: currentStatus != 'Pending' && currentStatus != 'Selesai'
+                  ? () {
+                      Navigator.pop(context);
+                      _updateStatus(context, 'pending'); // Implement _updateStatus
+                    }
+                  : null,
+              enabled: currentStatus != 'Pending' && currentStatus != 'Selesai',
+            ),
+            ListTile(
+              leading: const Icon(Icons.check_circle_rounded, color: Colors.teal),
+              title: const Text('Selesai'),
+              onTap: currentStatus != 'Selesai'
+                  ? () {
+                      Navigator.pop(context);
+                      _updateStatus(context, 'selesai'); // Implement _updateStatus
+                    }
+                  : null,
+              enabled: currentStatus != 'Selesai',
+            ),
+          ],
         ],
       ),
     );
