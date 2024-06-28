@@ -93,6 +93,12 @@ class _KategoriCreateState extends State<KategoriCreate> {
         title: const Text('Add Kategori'),
         backgroundColor: CustomColors.second,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -147,20 +153,17 @@ class _KategoriCreateState extends State<KategoriCreate> {
                           horizontal: 24, vertical: 16),
                     ),
                     onPressed: _save,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.save),
-                          SizedBox(
-                              width:
-                                  8), // Add some spacing between the icon and text
-                          Text(
-                            'Simpan Data',
-                          ),
-                        ],
-                      ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.save),
+                        SizedBox(
+                            width:
+                                8), // Add some spacing between the icon and text
+                        Text(
+                          'Simpan Data',
+                        ),
+                      ],
                     ),
                   ),
                 ),

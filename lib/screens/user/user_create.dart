@@ -107,6 +107,12 @@ Widget build(BuildContext context) {
       title: const Text('Add user'),
       backgroundColor: CustomColors.second,
       foregroundColor: Colors.white,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new_rounded),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
     ),
     body: Column(
       children: <Widget>[
@@ -209,16 +215,13 @@ Widget build(BuildContext context) {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             ),
             onPressed: _save,
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.save),
-                  SizedBox(width: 8), // Add some spacing between the icon and text
-                  Text('Simpan Data'),
-                ],
-              ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.save),
+                SizedBox(width: 8), // Add some spacing between the icon and text
+                Text('Simpan Data'),
+              ],
             ),
           ),
         ),

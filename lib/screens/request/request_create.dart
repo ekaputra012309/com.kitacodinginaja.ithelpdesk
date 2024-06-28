@@ -175,6 +175,12 @@ class _RequestCreateState extends State<RequestCreate> {
         title: const Text('Add Request'),
         backgroundColor: CustomColors.second,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -185,157 +191,161 @@ class _RequestCreateState extends State<RequestCreate> {
                   constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height - AppBar().preferredSize.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - 32.0, // Adjust the padding and constraints as per your need
                   ),
-                  child: ReactiveForm(
-                    formGroup: form,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        const Text('Pelapor'),
-                        const SizedBox(height: 16),
-                        ReactiveTextField<String>(
-                          formControlName: 'pelapor',
-                          decoration: const InputDecoration(
-                            hintText: 'Pelapor',
-                            border: OutlineInputBorder(),
-                          ),
-                          validationMessages: {
-                            'required': (error) => 'Please enter some text',
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        const Text('Pilih Lantai'),                        
-                        const SizedBox(height: 16),
-                        ReactiveDropdownField<String>(
-                          formControlName: 'lantai',
-                          decoration: const InputDecoration(
-                            hintText: 'Lantai',
-                            border: OutlineInputBorder(),
-                          ),
-                          validationMessages: {
-                            'required': (error) => 'Please select a lantai',
-                          },
-                          items: lantaiItems.map((item) {
-                            return DropdownMenuItem<String>(
-                              value: item['id'].toString(),
-                              child: Text(item['floorname']),
-                            );
-                          }).toList(),
-                          onChanged: (control) {
-                            setState(() {
-                              lokasiItems = [];
-                            });                          
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        const Text('Pilih Lokasi'),
-                        const SizedBox(height: 16),
-                        ReactiveDropdownField<String>(
-                          formControlName: 'lokasi',
-                          decoration: const InputDecoration(
-                            hintText: 'Lokasi',
-                            border: OutlineInputBorder(),
-                          ),
-                          validationMessages: {
-                            'required': (error) => 'Please select a lokasi',
-                          },
-                          items: lokasiItems.map((item) {
-                            return DropdownMenuItem<String>(
-                              value: item['id'].toString(),
-                              child: Text(item['locationname']),
-                            );
-                          }).toList(),
-                        ),
-                        const SizedBox(height: 16),
-                        const Text('Pilih Tingkat Kesulitan'),
-                        const SizedBox(height: 16),
-                        ReactiveDropdownField<String>(
-                          formControlName: 'tingkat',
-                          decoration: const InputDecoration(
-                            hintText: 'Tingkat Kesulitan',
-                            border: OutlineInputBorder(),
-                          ),
-                          items: _tingkat.map((tingkat) {
-                            return DropdownMenuItem<String>(
-                              value: tingkat,
-                              child: Text(tingkat),
-                            );
-                          }).toList(),
-                          validationMessages: {
-                            'required': (error) => 'Please select a tingkat',
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        const Text('Pilih Kategori 1'),
-                        const SizedBox(height: 16),
-                        ReactiveDropdownField<String>(
-                          formControlName: 'kategori',
-                          decoration: const InputDecoration(
-                            hintText: 'Kategori 1',
-                            border: OutlineInputBorder(),
-                          ),
-                          items: _kategori.map((kategori) {
-                            return DropdownMenuItem<String>(
-                              value: kategori,
-                              child: Text(kategori),
-                            );
-                          }).toList(),
-                          onChanged: (control) {
-                            setState(() {
-                              kategoriItems = [];
-                            });                          
-                          },
-                          validationMessages: {
-                            'required': (error) => 'Please select a kategori',
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        const Text('Pilih Kategori 2'),
-                        const SizedBox(height: 16),
-                        ReactiveDropdownField<String>(
-                          formControlName: 'kategori2',
-                          decoration: const InputDecoration(
-                            hintText: 'Kategori 2',
-                            border: OutlineInputBorder(),
-                          ),
-                          items: kategoriItems.map((item) {
-                            return DropdownMenuItem<String>(
-                              value: item['id'].toString(),
-                              child: Text(item['hashtag']),
-                            );
-                          }).toList(),
-                          validationMessages: {
-                            'required': (error) => 'Please select a kategori',
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        const Text('Kendala'),
-                        const SizedBox(height: 16),
-                        ReactiveTextField<String>(
-                          formControlName: 'kendala',
-                          maxLines: 3,
-                          decoration: const InputDecoration(
-                            hintText: 'Kendala',
-                            border: OutlineInputBorder(),
-                          ),
-                          validationMessages: {
-                            'required': (error) => 'Please enter some text',
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: CustomColors.second,
-                            foregroundColor: CustomColors.putih,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: CustomColors.putih
+                    ),
+                    child: ReactiveForm(
+                      formGroup: form,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          const Text('Pelapor'),
+                          const SizedBox(height: 16),
+                          ReactiveTextField<String>(
+                            formControlName: 'pelapor',
+                            decoration: const InputDecoration(
+                              hintText: 'Pelapor',
+                              border: OutlineInputBorder(),
                             ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 16),
+                            validationMessages: {
+                              'required': (error) => 'Please enter some text',
+                            },
                           ),
-                          onPressed: _save,
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 4.0),
-                            child: Row(
+                          const SizedBox(height: 16),
+                          const Text('Pilih Lantai'),                        
+                          const SizedBox(height: 16),
+                          ReactiveDropdownField<String>(
+                            formControlName: 'lantai',
+                            decoration: const InputDecoration(
+                              hintText: 'Lantai',
+                              border: OutlineInputBorder(),
+                            ),
+                            validationMessages: {
+                              'required': (error) => 'Please select a lantai',
+                            },
+                            items: lantaiItems.map((item) {
+                              return DropdownMenuItem<String>(
+                                value: item['id'].toString(),
+                                child: Text(item['floorname']),
+                              );
+                            }).toList(),
+                            onChanged: (control) {
+                              setState(() {
+                                lokasiItems = [];
+                              });                          
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          const Text('Pilih Lokasi'),
+                          const SizedBox(height: 16),
+                          ReactiveDropdownField<String>(
+                            formControlName: 'lokasi',
+                            decoration: const InputDecoration(
+                              hintText: 'Lokasi',
+                              border: OutlineInputBorder(),
+                            ),
+                            validationMessages: {
+                              'required': (error) => 'Please select a lokasi',
+                            },
+                            items: lokasiItems.map((item) {
+                              return DropdownMenuItem<String>(
+                                value: item['id'].toString(),
+                                child: Text(item['locationname']),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(height: 16),
+                          const Text('Pilih Tingkat Kesulitan'),
+                          const SizedBox(height: 16),
+                          ReactiveDropdownField<String>(
+                            formControlName: 'tingkat',
+                            decoration: const InputDecoration(
+                              hintText: 'Tingkat Kesulitan',
+                              border: OutlineInputBorder(),
+                            ),
+                            items: _tingkat.map((tingkat) {
+                              return DropdownMenuItem<String>(
+                                value: tingkat,
+                                child: Text(tingkat),
+                              );
+                            }).toList(),
+                            validationMessages: {
+                              'required': (error) => 'Please select a tingkat',
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          const Text('Pilih Kategori 1'),
+                          const SizedBox(height: 16),
+                          ReactiveDropdownField<String>(
+                            formControlName: 'kategori',
+                            decoration: const InputDecoration(
+                              hintText: 'Kategori 1',
+                              border: OutlineInputBorder(),
+                            ),
+                            items: _kategori.map((kategori) {
+                              return DropdownMenuItem<String>(
+                                value: kategori,
+                                child: Text(kategori),
+                              );
+                            }).toList(),
+                            onChanged: (control) {
+                              setState(() {
+                                kategoriItems = [];
+                              });                          
+                            },
+                            validationMessages: {
+                              'required': (error) => 'Please select a kategori',
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          const Text('Pilih Kategori 2'),
+                          const SizedBox(height: 16),
+                          ReactiveDropdownField<String>(
+                            formControlName: 'kategori2',
+                            decoration: const InputDecoration(
+                              hintText: 'Kategori 2',
+                              border: OutlineInputBorder(),
+                            ),
+                            items: kategoriItems.map((item) {
+                              return DropdownMenuItem<String>(
+                                value: item['id'].toString(),
+                                child: Text(item['hashtag']),
+                              );
+                            }).toList(),
+                            validationMessages: {
+                              'required': (error) => 'Please select a kategori',
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          const Text('Kendala'),
+                          const SizedBox(height: 16),
+                          ReactiveTextField<String>(
+                            formControlName: 'kendala',
+                            maxLines: 3,
+                            decoration: const InputDecoration(
+                              hintText: 'Kendala',
+                              border: OutlineInputBorder(),
+                            ),
+                            validationMessages: {
+                              'required': (error) => 'Please enter some text',
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: CustomColors.second,
+                              foregroundColor: CustomColors.putih,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 16),
+                            ),
+                            onPressed: _save,
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.save),
@@ -344,9 +354,9 @@ class _RequestCreateState extends State<RequestCreate> {
                               ],
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 32), // Add extra space at the bottom
-                      ],
+                          const SizedBox(height: 32), // Add extra space at the bottom
+                        ],
+                      ),
                     ),
                   ),
                 ),

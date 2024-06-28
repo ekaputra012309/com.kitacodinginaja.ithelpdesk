@@ -108,6 +108,12 @@ class _UserEditState extends State<UserEdit> {
         title: const Text('Edit User'),
         backgroundColor: CustomColors.second,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -212,16 +218,13 @@ class _UserEditState extends State<UserEdit> {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             ),
             onPressed: _update,
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.save),
-                  SizedBox(width: 8), // Add some spacing between the icon and text
-                  Text('Update Data'),
-                ],
-              ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.save),
+                SizedBox(width: 8), // Add some spacing between the icon and text
+                Text('Update Data'),
+              ],
             ),
           ),
         ),

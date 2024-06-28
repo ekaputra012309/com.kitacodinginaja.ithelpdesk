@@ -94,108 +94,142 @@ class _ChangepasswordState extends State<Changepassword> {
         title: const Text('Change Password'),
         backgroundColor: CustomColors.first,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ReactiveForm(
-          formGroup: form,
-          child: Column(
-            children: <Widget>[
-              ReactiveTextField<String>(
-                formControlName: 'old_password',
-                obscureText: _obscureOldPassword,
-                decoration: InputDecoration(
-                  labelText: 'Old Password',
-                  border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(Icons.keyboard),
-                  suffixIcon: IconButton(
-                    icon: Icon(_obscureOldPassword
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() {
-                        _obscureOldPassword = !_obscureOldPassword;
-                      });
-                    },
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
-                ),
-                validationMessages: {
-                  'required': (error) => 'Please enter your old password',
-                },
-              ),
-              const SizedBox(height: 16),
-              ReactiveTextField<String>(
-                formControlName: 'password',
-                obscureText: _obscureNewPassword,
-                decoration: InputDecoration(
-                  labelText: 'New Password',
-                  border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(Icons.keyboard),
-                  suffixIcon: IconButton(
-                    icon: Icon(_obscureNewPassword
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() {
-                        _obscureNewPassword = !_obscureNewPassword;
-                      });
-                    },
-                  ),
-                ),
-                validationMessages: {
-                  'required': (error) => 'Please enter a new password',
-                },
-              ),
-              const SizedBox(height: 16),
-              ReactiveTextField<String>(
-                formControlName: 'confirm_password',
-                obscureText: _obscureConfirmPassword,
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(Icons.keyboard),
-                  suffixIcon: IconButton(
-                    icon: Icon(_obscureConfirmPassword
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() {
-                        _obscureConfirmPassword = !_obscureConfirmPassword;
-                      });
-                    },
-                  ),
-                ),
-                validationMessages: {
-                  'required': (error) => 'Please confirm your new password',
-                  'mustMatch': (error) => 'Passwords do not match',
-                },
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomColors.first,
-                      foregroundColor: CustomColors.putih,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 16),
-                    ),
-                    onPressed: _update,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.save),
-                          SizedBox(
-                              width:
-                                  8), // Add some spacing between the icon and text
-                          Text(
-                            'Save Changes',
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ReactiveForm(
+                      formGroup: form,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Old Password',
+                          ),
+                          const SizedBox(height: 16),
+                          ReactiveTextField<String>(
+                            formControlName: 'old_password',
+                            obscureText: _obscureOldPassword,
+                            decoration: InputDecoration(
+                              hintText: 'Old Password',
+                              border: const OutlineInputBorder(),
+                              prefixIcon: const Icon(Icons.keyboard),
+                              suffixIcon: IconButton(
+                                icon: Icon(_obscureOldPassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureOldPassword = !_obscureOldPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            validationMessages: {
+                              'required': (error) => 'Please enter your old password',
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'New Password',
+                          ),
+                          const SizedBox(height: 16),
+                          ReactiveTextField<String>(
+                            formControlName: 'password',
+                            obscureText: _obscureNewPassword,
+                            decoration: InputDecoration(
+                              hintText: 'New Password',
+                              border: const OutlineInputBorder(),
+                              prefixIcon: const Icon(Icons.keyboard),
+                              suffixIcon: IconButton(
+                                icon: Icon(_obscureNewPassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureNewPassword = !_obscureNewPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            validationMessages: {
+                              'required': (error) => 'Please enter a new password',
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'Confirm Password',
+                          ),
+                          const SizedBox(height: 16),
+                          ReactiveTextField<String>(
+                            formControlName: 'confirm_password',
+                            obscureText: _obscureConfirmPassword,
+                            decoration: InputDecoration(
+                              hintText: 'Confirm Password',
+                              border: const OutlineInputBorder(),
+                              prefixIcon: const Icon(Icons.keyboard),
+                              suffixIcon: IconButton(
+                                icon: Icon(_obscureConfirmPassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureConfirmPassword =
+                                        !_obscureConfirmPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            validationMessages: {
+                              'required': (error) =>
+                                  'Please confirm your new password',
+                              'mustMatch': (error) => 'Passwords do not match',
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: CustomColors.first,
+                                foregroundColor: CustomColors.putih,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 16),
+                              ),
+                              onPressed: _update,
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.save),
+                                  SizedBox(
+                                    width: 8,
+                                  ), // Add some spacing between the icon and text
+                                  Text(
+                                    'Save Changes',
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -203,9 +237,9 @@ class _ChangepasswordState extends State<Changepassword> {
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -89,71 +89,84 @@ class _ProfileState extends State<Profile> {
         title: const Text('Edit Profile'),
         backgroundColor: CustomColors.first,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ReactiveForm(
-          formGroup: form,
-          child: Column(
-            children: <Widget>[
-              ReactiveTextField<String>(
-                formControlName: 'name',
-                decoration: const InputDecoration(
-                  labelText: 'Nama Lengkap',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.keyboard),
-                ),
-                validationMessages: {
-                  'required': (error) => 'Please enter some text',
-                },
-              ),
-              const SizedBox(height: 16),
-              ReactiveTextField<String>(
-                formControlName: 'email',
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
-                ),
-                validationMessages: {
-                  'required': (error) => 'Please enter some text',
-                  'email': (error) => 'The email value must be a valid email',
-                },
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomColors.first,
-                      foregroundColor: CustomColors.putih,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 16),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ReactiveForm(
+                formGroup: form,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text(
+                      'Nama Lengkap',
                     ),
-                    onPressed: _update,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
-                      child: Row(
+                    const SizedBox(height: 16),
+                    ReactiveTextField<String>(
+                      formControlName: 'name',
+                      decoration: const InputDecoration(
+                        hintText: 'Nama Lengkap',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.keyboard),
+                      ),
+                      validationMessages: {
+                        'required': (error) => 'Please enter some text',
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Email',
+                    ),
+                    const SizedBox(height: 16),
+                    ReactiveTextField<String>(
+                      formControlName: 'email',
+                      decoration: const InputDecoration(
+                        hintText: 'Email',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.email),
+                      ),
+                      validationMessages: {
+                        'required': (error) => 'Please enter some text',
+                        'email': (error) => 'The email value must be a valid email',
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.first,
+                        foregroundColor: CustomColors.putih,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                      ),
+                      onPressed: _update,
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.save),
-                          SizedBox(
-                              width:
-                                  8), // Add some spacing between the icon and text
-                          Text(
-                            'Update Profile',
-                          ),
+                          SizedBox(width: 8), // Add some spacing between the icon and text
+                          Text('Update Profile'),
                         ],
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),

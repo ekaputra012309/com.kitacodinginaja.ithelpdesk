@@ -11,6 +11,12 @@ class About extends StatelessWidget {
         title: const Text('About'),
         backgroundColor: CustomColors.first,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: const Center(
         child: Column(

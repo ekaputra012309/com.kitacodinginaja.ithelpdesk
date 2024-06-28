@@ -118,6 +118,12 @@ class _KategoriIndexState extends State<KategoriIndex> {
           title: const Text('Kategori'),
           backgroundColor: CustomColors.second,
           foregroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         body: RefreshIndicator(
           onRefresh: () async {

@@ -93,6 +93,12 @@ class _KategoriEditState extends State<KategoriEdit> {
         title: const Text('Edit Kategori'),
         backgroundColor: CustomColors.second,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -147,20 +153,17 @@ class _KategoriEditState extends State<KategoriEdit> {
                           horizontal: 24, vertical: 16),
                     ),
                     onPressed: _update,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.save),
-                          SizedBox(
-                              width:
-                                  8), // Add some spacing between the icon and text
-                          Text(
-                            'Update Data',
-                          ),
-                        ],
-                      ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.save),
+                        SizedBox(
+                            width:
+                                8), // Add some spacing between the icon and text
+                        Text(
+                          'Update Data',
+                        ),
+                      ],
                     ),
                   ),
                 ),

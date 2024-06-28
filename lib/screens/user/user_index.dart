@@ -118,6 +118,12 @@ class _UserIndexState extends State<UserIndex> {
           title: const Text('User'),
           backgroundColor: CustomColors.second,
           foregroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         body: RefreshIndicator(
           onRefresh: () async {

@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
+
 import '../constans.dart';
 import 'package:flutter/material.dart';
 import 'kategori/kategori_index.dart';
 import 'lantai/lantai_index.dart';
 import 'lokasi/lokasi_index.dart';
+import 'request/widget/request_model.dart';
 import 'user/user_index.dart';
 
 class Menu extends StatefulWidget {
@@ -32,12 +35,58 @@ class _MenuState extends State<Menu> {
 
   final List<ListMenuItem> listMenuItems = [
     ListMenuItem(
-        icon: Icons.edit_attributes_rounded, label: 'Request User', count: 8),
+        icon: Icons.edit_attributes_rounded, label: 'Request User', count: 0),
     ListMenuItem(
-        icon: Icons.newspaper_rounded, label: 'Berita Acara', count: 3),
+        icon: Icons.newspaper_rounded, label: 'Berita Acara', count: 0),
     ListMenuItem(
-        icon: Icons.file_copy_rounded, label: 'Surat Tanda Terima', count: 1),
+        icon: Icons.file_copy_rounded, label: 'Surat Tanda Terima', count: 0),
   ];
+
+  Future<List<DataItem>> fetchpermintaan() async {
+    final ApiService apiService = ApiService();
+    try {
+      Response response = await apiService.getRequest('/permintaan');
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+
+        if (responseData is Map<String, dynamic> &&
+            responseData['success'] == true &&
+            responseData.containsKey('data')) {
+          final List<dynamic> items = responseData['data'];
+          List<DataItem> dataItems =
+              items.map((item) => DataItem.fromJson(item)).toList();
+          return dataItems;
+        } else {
+          throw Exception('Invalid response format or missing data key');
+        }
+      } else {
+        debugPrint('Failed to load data. Status code: ${response.statusCode}, Body: ${response.data}');
+        throw Exception('Failed to load data. Please try again later.');
+      }
+    } catch (e) {
+      debugPrint('Error during fetchpermintaan: $e');
+      throw Exception('Error during fetchpermintaan: $e');
+    }
+  }
+
+ @override
+  void initState() {
+    super.initState();
+    fetchAndCountData();
+  }
+
+  Future<void> fetchAndCountData() async {
+    try {
+      List<DataItem> dataItems = await fetchpermintaan();
+      setState(() {
+        listMenuItems[0].count = dataItems.length; // Assuming 'Request User' corresponds to the first item
+      });
+    } catch (e) {
+      debugPrint('Error fetching data: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,23 +102,20 @@ class _MenuState extends State<Menu> {
         backgroundColor: CustomColors.putih,
         foregroundColor: CustomColors.second,
       ),
-      body: Container(
-        color: CustomColors.abu,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 8.0),
-                buildSectionTitle('Master Data'),
-                const SizedBox(height: 8.0),
-                buildGridMenu(),
-                const SizedBox(height: 16.0),
-                buildSectionTitle('Transaction'),
-                const SizedBox(height: 8.0),
-                buildListMenu(),
-              ],
-            ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 8.0),
+              buildSectionTitle('Master Data'),
+              const SizedBox(height: 8.0),
+              buildGridMenu(),
+              const SizedBox(height: 16.0),
+              buildSectionTitle('Transaction'),
+              const SizedBox(height: 8.0),
+              buildListMenu(),
+            ],
           ),
         ),
       ),
@@ -181,7 +227,7 @@ class _MenuState extends State<Menu> {
 class ListMenuItem {
   final IconData icon;
   final String label;
-  final int count;
+  int count;
 
   ListMenuItem({required this.icon, required this.label, required this.count});
 }
