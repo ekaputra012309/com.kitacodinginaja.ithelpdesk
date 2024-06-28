@@ -21,6 +21,22 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
 
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedEmail();
+  }
+
+  Future<void> _loadSavedEmail() async {
+    var box = await Hive.openBox('userData');
+    final String? savedEmail = box.get('savedEmail');
+    if (savedEmail != null) {
+      setState(() {
+        _emailController.text = savedEmail;
+      });
+    }
+  }
+
   void _togglePasswordVisibility() {
     setState(() {
       _obscureText = !_obscureText;
@@ -74,6 +90,9 @@ class _LoginPageState extends State<LoginPage> {
               box.put('email', userEmail);
               box.put('role', role);
               box.put('id', id);
+
+              // Save email
+              box.put('savedEmail', email);
 
               _scaffoldMessengerKey.currentState?.showSnackBar(
                 SnackBar(
