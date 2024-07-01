@@ -12,6 +12,7 @@ class DataItem {
   final String? userName;
   final String createdAt;
   final String updatedAt;
+  final String createdAtFormated;
   final Lokasi? lokasi; // Make Lokasi nullable
   final Kategori? kategori; // Make Kategori nullable
   final User user;
@@ -30,6 +31,7 @@ class DataItem {
     this.userName,
     required this.createdAt,
     required this.updatedAt,
+    required this.createdAtFormated,
     this.lokasi, // Allow null
     this.kategori, // Allow null
     required this.user,
@@ -50,6 +52,7 @@ class DataItem {
       userName: json['user_name'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+      createdAtFormated: json['created_at_formatted'],
       lokasi: json['lokasi'] != null ? Lokasi.fromJson(json['lokasi']) : null,
       kategori: json['kategori'] != null ? Kategori.fromJson(json['kategori']) : null,
       user: User.fromJson(json['user']),

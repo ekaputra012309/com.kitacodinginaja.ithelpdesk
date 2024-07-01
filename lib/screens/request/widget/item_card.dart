@@ -37,6 +37,12 @@ class ItemCard extends StatelessWidget {
     return formatter.format(dateTime);
   }
 
+  String formatTime(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    DateFormat timeFormatter = DateFormat('HH:mm');
+    return timeFormatter.format(dateTime);
+  }
+
   Future<void> _updateStatus(BuildContext context, String status) async {
     final ApiService apiService = ApiService();
     final String id = item.id.toString();
@@ -252,14 +258,6 @@ class ItemCard extends StatelessWidget {
                 );
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.delete, color: Colors.redAccent),
-              title: const Text('Delete'),
-              onTap: () {
-                Navigator.of(context).pop();
-                _showDeleteConfirmationDialog(context); // Implement _showDeleteConfirmationDialog
-              },
-            ),
           ] else ...[
             ListTile(
               leading: const Icon(Icons.delete, color: Colors.redAccent),
@@ -373,8 +371,26 @@ class ItemCard extends StatelessWidget {
                     },
                     child: Row(
                       children: [
-                        Text(formatDate(item.createdAt), style: const TextStyle(fontSize: 12.0),),
-                        const Icon(Icons.more_vert),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Row(
+                              children: [
+                                Text(formatDate(item.createdAtFormated), style: const TextStyle(fontSize: 12.0),),
+                                const SizedBox(width: 4.0),
+                                const Icon(Icons.calendar_month_rounded, size: 12.0),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(formatTime(item.createdAtFormated), style: const TextStyle(fontSize: 12.0),),
+                                const SizedBox(width: 4.0),
+                                const Icon(Icons.access_time_filled_rounded, size: 12.0),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Icon(Icons.more_vert, size: 28.0,),
                       ],
                     ),
                   ),
