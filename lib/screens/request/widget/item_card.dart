@@ -10,8 +10,9 @@ class ItemCard extends StatelessWidget {
   final DataItem item;
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
   final VoidCallback onDelete;
+  final List<String> _tingkat = ['Mudah', 'Sedang', 'Sulit'];
 
-  const ItemCard({
+  ItemCard({
     super.key,
     required this.item,
     required this.scaffoldMessengerKey,
@@ -26,6 +27,19 @@ class ItemCard extends StatelessWidget {
         return Colors.blue;
       case 'Selesai':
         return CustomColors.first;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  Color getTingkatColor(String status) {
+    switch (status) {
+      case 'Sulit':
+        return Colors.redAccent;
+      case 'Sedang':
+        return Colors.orange;
+      case 'Mudah':
+        return CustomColors.second;
       default:
         return Colors.grey;
     }
@@ -48,33 +62,86 @@ class ItemCard extends StatelessWidget {
     final String id = item.id.toString();
 
     if (status == 'proses') {
-      try {
-        final response = await apiService.putRequest('/permintaan/$id/status/$status', {});
+      String? selectedValue = _tingkat[0];
 
-        if (response.statusCode == 200) {
-          scaffoldMessengerKey.currentState?.showSnackBar(
-            const SnackBar(
-              content: Text('Status updated successfully'),
+      await showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: CustomColors.putih,
+        context: context,
+        builder: (context) {
+          return SingleChildScrollView(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
+              left: 16.0,
+              right: 16.0,
+              top: 16.0,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Pilih Tingkat Kesulitan'),
+                const SizedBox(height: 4.0),
+                DropdownButtonFormField<String>(
+                  value: selectedValue,
+                  items: _tingkat.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    selectedValue = newValue;
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all<Color>(CustomColors.second),
+                    foregroundColor: WidgetStateProperty.all<Color>(CustomColors.putih),
+                  ),
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    try {
+                      final response = await apiService.putRequest('/permintaan/$id/status/$status', {
+                        'tingkat': selectedValue,
+                      });
+
+                      if (response.statusCode == 200) {
+                        scaffoldMessengerKey.currentState?.showSnackBar(
+                          const SnackBar(
+                            content: Text('Status updated successfully'),
+                          ),
+                        );
+                        onDelete();
+                      } else {
+                        scaffoldMessengerKey.currentState?.showSnackBar(
+                          const SnackBar(
+                            content: Text('Failed to update status'),
+                            backgroundColor: Colors.redAccent,
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      debugPrint('Error updating status: $e');
+                      scaffoldMessengerKey.currentState?.showSnackBar(
+                        const SnackBar(
+                          content: Text('Error updating status'),
+                          backgroundColor: Colors.redAccent,
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text('Save'),
+                ),
+              ],
             ),
           );
-          onDelete();
-        } else {
-          scaffoldMessengerKey.currentState?.showSnackBar(
-            const SnackBar(
-              content: Text('Failed to update status'),
-              backgroundColor: Colors.redAccent,
-            ),
-          );
-        }
-      } catch (e) {
-        debugPrint('Error updating status: $e');
-        scaffoldMessengerKey.currentState?.showSnackBar(
-          const SnackBar(
-            content: Text('Error updating status'),
-            backgroundColor: Colors.redAccent,
-          ),
-        );
-      }
+        },
+      );
     } else {
       String? inputText;
       String hintText = '';
@@ -170,7 +237,6 @@ class ItemCard extends StatelessWidget {
       );
     }
   }
-
 
   void _showDeleteConfirmationDialog(BuildContext context) {
 
@@ -376,16 +442,16 @@ class ItemCard extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Text(formatDate(item.createdAtFormated), style: const TextStyle(fontSize: 12.0),),
+                                Text(formatDate(item.createdAtFormated), style: const TextStyle(fontSize: 9.0),),
                                 const SizedBox(width: 4.0),
-                                const Icon(Icons.calendar_month_rounded, size: 12.0),
+                                const Icon(Icons.calendar_month_rounded, size: 9.0),
                               ],
                             ),
                             Row(
                               children: [
-                                Text(formatTime(item.createdAtFormated), style: const TextStyle(fontSize: 12.0),),
+                                Text(formatTime(item.createdAtFormated), style: const TextStyle(fontSize: 9.0),),
                                 const SizedBox(width: 4.0),
-                                const Icon(Icons.access_time_filled_rounded, size: 12.0),
+                                const Icon(Icons.access_time_filled_rounded, size: 9.0),
                               ],
                             ),
                           ],
@@ -503,16 +569,32 @@ class ItemCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: getStatusColor(item.status),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                    child: Text(
-                      item.status,
-                      style: const TextStyle(fontSize: 12.0, color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: getStatusColor(item.status),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        child: Text(
+                          item.status,
+                          style: const TextStyle(fontSize: 10.0, color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const SizedBox(width: 4.0),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: getTingkatColor(item.tingkat),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        child: Text(
+                          item.tingkat,
+                          style: const TextStyle(fontSize: 10.0, color: Colors.white, ),
+                        ),
+                      ),
+                    ],
                   ),
                   Row(
                     children: [

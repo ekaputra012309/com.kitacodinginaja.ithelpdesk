@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../screens/request/request_index.dart';
 import '../constans.dart';
-import '../screens/menu.dart';
 import '../screens/other.dart';
 import 'berita/berita_index.dart';
+import 'home.dart';
 import 'surat/surat_index.dart';
 
 class Bottomnavbar extends StatefulWidget {
@@ -36,7 +36,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
         children: [
           Icon(
             icon,
-            size: isSelected ? 28.0 : 28.0, // Adjust sizes
+            size: 28.0, // Adjust sizes
             color: isSelected ? CustomColors.second : CustomColors.hitam,
           ),
           const SizedBox(height: 4.0),          
@@ -84,7 +84,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
     } else {
       pages = [
         // const Dashboard(),
-        const Menu(),
+        const Home(),
         const RequestIndex(),
         const BeritaIndex(),
         const SuratIndex(),
@@ -93,7 +93,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
       items = [
         _buildBottomNavigationBarItem(
           index: 0,
-          icon: Icons.home_filled,
+          icon: Icons.add_home,
           label: 'Home',
           isSelected: _selectedIndex == 0,
         ),
@@ -111,7 +111,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
         ),
         _buildBottomNavigationBarItem(
           index: 3,
-          icon: Icons.receipt_long_rounded,
+          icon: Icons.receipt_long,
           label: 'Receipt',
           isSelected: _selectedIndex == 3,
         ),

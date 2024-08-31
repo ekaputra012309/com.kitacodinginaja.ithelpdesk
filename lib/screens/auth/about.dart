@@ -116,7 +116,7 @@ class _AboutState extends State<About> {
                   SizedBox(height: 8.0),
                   Text(
                     'Changelog',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -152,7 +152,7 @@ class _AboutState extends State<About> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Versi ${dataR['version']}',
+                                    '${dataR['version']} v${dataR['version_number']}',
                                     style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),

@@ -18,13 +18,13 @@ class _RequestCreateState extends State<RequestCreate> {
   final ApiService _apiService = ApiService();
 
   final List<String> _kategori = ['Hardware', 'Software', 'Jaringan', 'Other'];
-  final List<String> _tingkat = ['Mudah', 'Sedang', 'Sulit'];
+  // final List<String> _tingkat = ['Mudah', 'Sedang', 'Sulit'];
 
   final FormGroup form = FormGroup({
     'pelapor': FormControl<String>(validators: [Validators.required]),
     'lantai': FormControl<String>(validators: [Validators.required]),
     'lokasi': FormControl<String>(validators: [Validators.required]),
-    'tingkat': FormControl<String>(validators: [Validators.required]),
+    // 'tingkat': FormControl<String>(validators: [Validators.required]),
     'kategori': FormControl<String>(validators: [Validators.required]),
     'kategori2': FormControl<String>(validators: [Validators.required]),
     'kendala': FormControl<String>(validators: [Validators.required]),
@@ -131,7 +131,7 @@ class _RequestCreateState extends State<RequestCreate> {
         final data = {
           'pelapor': form.control('pelapor').value,
           'lokasi_id': form.control('lokasi').value,
-          'tingkat': form.control('tingkat').value,
+          // 'tingkat': form.control('tingkat').value,
           'kategori_id': form.control('kategori2').value,
           'kendala': form.control('kendala').value,
           'user_id': userId,
@@ -258,25 +258,25 @@ class _RequestCreateState extends State<RequestCreate> {
                             }).toList(),
                           ),
                           const SizedBox(height: 16),
-                          const Text('Pilih Tingkat Kesulitan'),
-                          const SizedBox(height: 16),
-                          ReactiveDropdownField<String>(
-                            formControlName: 'tingkat',
-                            decoration: const InputDecoration(
-                              hintText: 'Tingkat Kesulitan',
-                              border: OutlineInputBorder(),
-                            ),
-                            items: _tingkat.map((tingkat) {
-                              return DropdownMenuItem<String>(
-                                value: tingkat,
-                                child: Text(tingkat),
-                              );
-                            }).toList(),
-                            validationMessages: {
-                              'required': (error) => 'Please select a tingkat',
-                            },
-                          ),
-                          const SizedBox(height: 16),
+                          // const Text('Pilih Tingkat Kesulitan'),
+                          // const SizedBox(height: 16),
+                          // ReactiveDropdownField<String>(
+                          //   formControlName: 'tingkat',
+                          //   decoration: const InputDecoration(
+                          //     hintText: 'Tingkat Kesulitan',
+                          //     border: OutlineInputBorder(),
+                          //   ),
+                          //   items: _tingkat.map((tingkat) {
+                          //     return DropdownMenuItem<String>(
+                          //       value: tingkat,
+                          //       child: Text(tingkat),
+                          //     );
+                          //   }).toList(),
+                          //   validationMessages: {
+                          //     'required': (error) => 'Please select a tingkat',
+                          //   },
+                          // ),
+                          // const SizedBox(height: 16),
                           const Text('Pilih Kategori 1'),
                           const SizedBox(height: 16),
                           ReactiveDropdownField<String>(

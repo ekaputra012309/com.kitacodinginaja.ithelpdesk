@@ -8,14 +8,14 @@ import 'lokasi/lokasi_index.dart';
 import 'request/widget/request_model.dart';
 import 'user/user_index.dart';
 
-class Menu extends StatefulWidget {
-  const Menu({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<Menu> createState() => _MenuState();
+  State<Home> createState() => _HomeState();
 }
 
-class _MenuState extends State<Menu> {
+class _HomeState extends State<Home> {
   int touchedIndex = -1;
 
   final List<MenuItem> menuItems = [

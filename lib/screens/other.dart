@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import '../constans.dart';
 import '../screens/auth/profile.dart';
 import 'auth/changepassword.dart';
+// import 'widget/download_manager.dart';
+import 'widget/download_service.dart';
 
 class Other extends StatefulWidget {
   const Other({super.key});
@@ -16,6 +19,8 @@ class _OtherState extends State<Other> {
   final ApiService _apiService = ApiService();
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
+  // final DownloadManager _downloadManager = DownloadManager();
+  final downloadService = DownloadService();
 
   late int idUser;
   String namaUser = '';
@@ -75,6 +80,82 @@ class _OtherState extends State<Other> {
     );
   }
 
+  Future<void> _showCheckVersionDialog(BuildContext context) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    // String appName = packageInfo.appName;
+    // String packageName = packageInfo.packageName;
+    String version = packageInfo.version;
+    // String buildNumber = packageInfo.buildNumber;
+
+    Response response = await _apiService.getRequest('/releases/latest');
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = response.data;
+
+      // Extract specific fields directly
+      final String versiNumber =
+          responseData['data']['version_number'] ?? 'Unknown';
+      final String versi = responseData['data']['version'] ?? 'Unknown';
+      final String linkarm64V8a = responseData['data']['arm64_v8a'] ?? '';
+      final String linkrelease = responseData['data']['release'] ?? '';
+      if (version != versiNumber) {
+        if (!context.mounted) return;
+        showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Update Available'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('New Version: $versi v$versiNumber'),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // _downloadManager.startDownload(
+                    //     linkarm64V8a, 'v$versiNumber-arm64_v8a.apk');
+                    downloadService.startDownload(
+                        linkarm64V8a, 'v$versiNumber-arm64_v8a.apk');
+                  },
+                  child: const Text('Download arm64_v8a'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // _downloadManager.startDownload(
+                    //     linkrelease, 'v$versiNumber.apk');
+                    downloadService.startDownload(
+                        linkrelease, 'v$versiNumber.apk');
+                  },
+                  child: const Text('Download release'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();                    
+                  },
+                  child: const Text('Close'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('App is up to date'),
+            backgroundColor: CustomColors.first,
+          ),
+        );
+      }
+    } else {
+      throw Exception('Failed to load version data');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScaffoldMessenger(
@@ -100,79 +181,106 @@ class _OtherState extends State<Other> {
           backgroundColor: CustomColors.putih,
           foregroundColor: CustomColors.second,
         ),
-        body: ListView(
-          children: [
-            sectionHeader('My Account Information'),
-            const SizedBox(
-              height: 8.0,
-            ),
-            buildListTile(
-                icon: Icons.lock_clock_rounded,
-                title: 'Change Password',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Changepassword(
-                        scaffoldMessengerKey: _scaffoldMessengerKey,
-                        id: idUser,
-                        nama: namaUser,
-                        email: emailUser,
-                        onUserEdited: () {
-                          setState(() {
-                            fetchUserData();
-                          });
-                        },
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            color: Colors.white,
+            child: ListView(
+              children: [
+                const SizedBox(height: 8.0),
+                sectionHeader('My Account Information'),
+                const SizedBox(height: 8.0),
+                buildListTile(
+                  icon: Icons.lock_clock_rounded,
+                  title: 'Change Password',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Changepassword(
+                          scaffoldMessengerKey: _scaffoldMessengerKey,
+                          id: idUser,
+                          nama: namaUser,
+                          email: emailUser,
+                          onUserEdited: () {
+                            setState(() {
+                              fetchUserData();
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                }),
-            const SizedBox(
-              height: 8.0,
+                    );
+                  },
+                ),
+                const SizedBox(height: 8.0),
+                sectionHeader('Settings'),
+                const SizedBox(height: 8.0),
+                buildListTile(
+                  icon: Icons.person_search_rounded,
+                  title: 'Edit Profile',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Profile(
+                          scaffoldMessengerKey: _scaffoldMessengerKey,
+                          id: idUser,
+                          nama: namaUser,
+                          email: emailUser,
+                          onUserEdited: () {
+                            setState(() {
+                              fetchUserData();
+                            });
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1.0),
+                buildListTile(
+                  icon: Icons.info_outline_rounded,
+                  title: 'About',
+                  onTap: () {
+                    Navigator.pushNamed(context, '/about');
+                  },
+                ),
+                const Divider(height: 1.0),
+                buildListTile(
+                  icon: Icons.android_rounded,
+                  title: 'Check for Updates',
+                  onTap: () {
+                    _showCheckVersionDialog(context);
+                  },
+                ),
+                const Divider(height: 1.0),
+                buildListTile(
+                  icon: Icons.logout_rounded,
+                  title: 'Logout',
+                  onTap: () {
+                    _showLogoutConfirmationDialog(context);
+                  },
+                ),
+                const Divider(height: 1.0),
+                FutureBuilder<PackageInfo>(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return const Center(child: Text('Error loading version info'));
+                    } else {
+                      String version = snapshot.data?.version ?? 'Unknown';
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(child: Text('App Version: $version')),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
-            sectionHeader('Settings'),
-            const SizedBox(
-              height: 8.0,
-            ),
-            buildListTile(
-              icon: Icons.person_search_rounded,
-              title: 'Edit Profile',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Profile(
-                      scaffoldMessengerKey: _scaffoldMessengerKey,
-                      id: idUser,
-                      nama: namaUser,
-                      email: emailUser,
-                      onUserEdited: () {
-                        setState(() {
-                          fetchUserData();
-                        });
-                      },
-                    ),
-                  ),
-                );
-              },
-            ),
-            // const Divider(height: 1.0),
-            buildListTile(
-              icon: Icons.question_mark_rounded,
-              title: 'About',
-              onTap: () {
-                Navigator.pushNamed(context, '/about');
-              },
-            ),
-            // const Divider(height: 1.0),
-            buildListTile(
-              icon: Icons.logout_rounded,
-              title: 'Logout',
-              onTap: () {
-                _showLogoutConfirmationDialog(context);
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -207,20 +315,11 @@ class _OtherState extends State<Other> {
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-      child: Card(
-        // elevation: 2.0,
-        color: CustomColors.putih,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: ListTile(
-          leading: Icon(icon, color: CustomColors.hitam),
-          title: Text(title, style: const TextStyle(fontSize: 16)),
-          trailing: const Icon(Icons.arrow_forward_ios,
-              color: Color(0xFF606A85), size: 20),
-          onTap: onTap,
-        ),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0),
+      child: ListTile(
+        leading: Icon(icon, color: CustomColors.hitam),
+        title: Text(title, style: const TextStyle(fontSize: 16)),
+        onTap: onTap,
       ),
     );
   }
